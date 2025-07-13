@@ -15,6 +15,7 @@ interface Message {
 
 interface ChatWindowProps {
   chatId: string | null;
+  onCallInitiate: (contact: string, type: 'audio' | 'video') => void;
 }
 
 const mockMessages: { [key: string]: Message[] } = {
@@ -45,7 +46,7 @@ const contactNames: { [key: string]: string } = {
   '4': 'Mom',
 };
 
-export function ChatWindow({ chatId }: ChatWindowProps) {
+export function ChatWindow({ chatId, onCallInitiate }: ChatWindowProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -121,10 +122,18 @@ export function ChatWindow({ chatId }: ChatWindowProps) {
         </div>
         
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon">
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={() => onCallInitiate(contactNames[chatId], 'audio')}
+          >
             <Phone className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon">
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={() => onCallInitiate(contactNames[chatId], 'video')}
+          >
             <Video className="h-5 w-5" />
           </Button>
           <Button variant="ghost" size="icon">
